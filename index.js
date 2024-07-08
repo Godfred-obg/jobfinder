@@ -20,7 +20,7 @@ app.use(
   })
 );
 
-const isNullOrEmpty = (value) =>
+/*const isNullOrEmpty = (value) =>
   !value || value.toLowerCase() === "undefined" || value === "";
 
 //app.use(express.json()); //req.body
@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });*/
 
 app.use(express.urlencoded({ extended: false }));
 

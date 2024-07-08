@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const product = require("./api/product");
 
-app.use(express.json({ extended: false }));
+//app.use(express.json({ extended: false }));
 require("dotenv").config();
 const pool = require("../db");
 const { hashPassword, comparePassword } = require("/auth");
@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { sendRegistrationEmail } = require("/email");
 
-app.use(express.json({ extended: false }));
+//app.use(express.json({ extended: false }));
 app.use(
   cors({
     origin: "*", // Replace with the origin of your React app

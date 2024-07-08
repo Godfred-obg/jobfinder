@@ -5,12 +5,12 @@ const product = require("./api/product");
 const cors = require("cors");
 //app.use(express.json({ extended: false }));
 //require("dotenv").config();
-const pool = require("../db");
-const { hashPassword, comparePassword } = require("/auth");
-const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
+//const pool = require("../db");
+//const { hashPassword, comparePassword } = require("/auth");
+//const cookieParser = require("cookie-parser");
+//const jwt = require("jsonwebtoken");
 //const fs = require("fs");
-const { sendRegistrationEmail } = require("/email");
+//const { sendRegistrationEmail } = require("/email");
 
 //app.use(express.json({ extended: false }));
 app.use(

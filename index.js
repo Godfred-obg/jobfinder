@@ -3,12 +3,12 @@ const app = express();
 const product = require("./api/product");
 
 //app.use(express.json({ extended: false }));
-require("dotenv").config();
+//require("dotenv").config();
 const pool = require("../db");
 const { hashPassword, comparePassword } = require("/auth");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
+//const fs = require("fs");
 const { sendRegistrationEmail } = require("/email");
 
 //app.use(express.json({ extended: false }));

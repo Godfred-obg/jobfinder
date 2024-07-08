@@ -4,7 +4,7 @@ const product = require("./api/product");
 
 const cors = require("cors");
 //app.use(express.json({ extended: false }));
-require("dotenv").config();
+//require("dotenv").config();
 const pool = require("../db");
 //const { hashPassword, comparePassword } = require("/auth");
 //const cookieParser = require("cookie-parser");

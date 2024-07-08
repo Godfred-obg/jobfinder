@@ -3,7 +3,7 @@ const app = express();
 const product = require("./api/product");
 const cors = require("cors");
 
-require("dotenv").config();
+//require("dotenv").config();
 //const pool = require("./db");
 //const { hashPassword, comparePassword } = require("./auth");
 const cookieParser = require("cookie-parser");
@@ -24,7 +24,7 @@ const isNullOrEmpty = (value) =>
   !value || value.toLowerCase() === "undefined" || value === "";
 
 //app.use(express.json()); //req.body
-app.use(cookieParser());
+/*app.use(cookieParser());
 app.use("/files", express.static("files"));
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });*/
 
 app.use(express.urlencoded({ extended: false }));
 

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const product = require("./api/product");
 
+const cors = require("cors");
 //app.use(express.json({ extended: false }));
 //require("dotenv").config();
 const pool = require("../db");

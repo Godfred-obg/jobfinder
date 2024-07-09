@@ -45,7 +45,46 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/product", product);
 
+app.post("/upload-files", upload.single("file"), async (req, res) => {
+  console.log(req.file);
+  // res.send(req.file)
+  const pdf = req.file.filename;
+  const job = req.body.job;
+  const employee = req.body.user;
+  console.log(job, employee);
+  try {
+    const newfile = await pool.query(
+      "INSERT INTO files (pdf) VALUES($1) RETURNING *",
+      [pdf]
+    );
+    const lastid = await pool.query("SELECT MAX(ID) as id FROM files");
 
+    const application = await pool.query(
+      "INSERT INTO application (job, employee, file) VALUES($1, $2, $3) RETURNING *",
+      [job, employee, lastid.rows[0].id]
+    );
+
+    const getjob = await pool.query(
+      "SELECT nome_job FROM job where job_id=$1",
+      [job]
+    );
+    const getemployee = await pool.query(
+      "SELECT nome, email FROM utente where utente_id=$1",
+      [employee]
+    );
+
+    sendRegistrationEmail(
+      getjob.rows[0].nome_job,
+      getemployee.rows[0].nome,
+      getemployee.rows[0].email
+    );
+    console.log(getemployee.rows[0].email);
+
+    res.send({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error" });
+  }
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));

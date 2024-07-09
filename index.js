@@ -27,7 +27,7 @@ const isNullOrEmpty = (value) =>
 //app.use(express.json()); //req.body
 
 app.use(cookieParser());
-app.use("/files", express.static("files"));
+//app.use("/files", express.static("files"));
 
 
 const upload = multer({ storage: storage });

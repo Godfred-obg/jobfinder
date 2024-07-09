@@ -30,7 +30,7 @@ const isNullOrEmpty = (value) =>
 //app.use("/files", express.static("files"));
 
 
-const upload = multer({ storage: storage });
+//const upload = multer({ storage: storage });
 
 app.use(express.urlencoded({ extended: false }));
 

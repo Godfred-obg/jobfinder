@@ -15,7 +15,7 @@ const { sendRegistrationEmail } = require("./email");
 app.use(express.json({ extended: false }));
 app.use(
   cors({
-    origin: "https://myjobboard.netlify.app/", // Replace with the origin of your React app
+    origin: "https://myjobboard.netlify.app", // Replace with the origin of your React app
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

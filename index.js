@@ -86,5 +86,58 @@ app.post("/upload-files", upload.single("file"), async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email) {
+      return res.json({
+        error: "email is required",
+      });
+    }
+    if (!password || password.length < 6) {
+      return res.json({
+        error: "password is incorrect",
+      });
+    }
+    const user = await pool.query(
+      `
+      SELECT utente_id, email, password, nome, cognome, stato, company_name
+      FROM utente
+      WHERE email = $1
+    `,
+      [email]
+    );
+
+    if (user.rows.length === 0) {
+      return res.json({
+        error: "No user found",
+      });
+    }
+
+    const match = await comparePassword(password, user.rows[0].password);
+
+    if (match) {
+      console.log("Password matched. Creating token...");
+      const token = jwt.sign(
+        {
+          email: user.rows[0].email,
+          nome: user.rows[0].nome,
+          stato: user.rows[0].stato,
+          id: user.rows[0].utente_id,
+          company: user.rows[0].company_name,
+        },
+        process.env.JWT_SECRET
+      );
+      res.json(token);
+
+      console.log("Token created:", token);
+    } else {
+      res.json("passwords do not match");
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));

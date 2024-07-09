@@ -238,5 +238,155 @@ app.post("/postjob", async (req, res) => {
   }
 });
 
+
+app.get("/job", async (req, res) => {
+  try {
+    const allTodos = await pool.query("SELECT * FROM job");
+    res.json(allTodos.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/post/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const allTodos = await pool.query(
+      "SELECT job_id, nome_job as nome, location, job_status FROM job where employer = $1",
+      [id]
+    );
+    res.json(allTodos.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/closejob/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const allTodos = await pool.query(
+      `UPDATE job SET job_status = 'close' WHERE job_id  = $1`,
+      [id]
+    );
+    res.json(allTodos.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/applied/:id", async (req, res) => {
+  try {
+    var user = req.params.id;
+    const applied = await pool.query(
+      "SELECT j.nome_job as nome, j.location as location FROM application JOIN job as j on (j.job_id=job) where employee = $1",
+      [user]
+    );
+    res.json(applied.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//get a todo
+
+app.get("/job/filter/:nome/:cat?/:loc?", async (req, res) => {
+  try {
+    let filteredJobs;
+    var per = req.params.nome;
+    per = `%${per}%`;
+    const cat = req.params.cat;
+    const loc = req.params.loc;
+    console.log(per);
+    console.log(cat);
+    console.log(cat);
+    console.log(req.originalUrl);
+    if (isNullOrEmpty(cat) && isNullOrEmpty(loc)) {
+      filteredJobs = await pool.query(
+        "SELECT * FROM job WHERE nome_job ILIKE $1;",
+        [per]
+      );
+    } else if (isNullOrEmpty(cat) && !isNullOrEmpty(loc)) {
+      filteredJobs = await pool.query(
+        "SELECT * FROM job WHERE nome_job ILIKE $1 AND location = $2;",
+        [per, loc]
+      );
+    } else if (!isNullOrEmpty(cat) && isNullOrEmpty(loc)) {
+      filteredJobs = await pool.query(
+        "SELECT * FROM job WHERE nome_job ILIKE $1 AND category = $2;",
+        [per, cat]
+      );
+    } else {
+      filteredJobs = await pool.query(
+        "SELECT * FROM job WHERE nome_job ILIKE $1 AND category = $2 AND location = $3;",
+        [per, cat, loc]
+      );
+    }
+
+    res.json(filteredJobs.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/details/:id/:userid", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userid = req.params.userid;
+    const job = await pool.query(
+      `
+        SELECT job_status, nome_job, location, company_name, descrizione
+        FROM job
+        WHERE job_id = $1
+      `,
+      [id]
+    );
+
+    if (job.rows.length === 0)
+      return res.status(404).json({ error: "Job not found" });
+
+    const exist = await pool.query(
+      `
+    SELECT EXISTS (
+      SELECT 1
+      FROM application
+      WHERE employee = $1 AND job = $2
+    );
+  `,
+      [userid, id]
+    );
+
+    res.json({
+      ...job.rows[0],
+      applicationExists: exist.rows[0].exists,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/candidates/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const job = await pool.query(
+      `
+        SELECT nome_job, location, u.nome as nome, u.cognome, f.pdf as file
+        FROM job
+        JOIN application AS app ON (app.job=job_id)
+        JOIN files AS f ON (f.id=app.file)
+        JOIN utente AS u ON (u.utente_id=app.employee)
+        WHERE job_id = $1
+      `,
+      [id]
+    );
+
+    res.json(job.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));

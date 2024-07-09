@@ -138,6 +138,105 @@ app.post("/login", async (req, res) => {
     console.error(err.message);
   }
 });
+app.post("/signup", async (req, res) => {
+  try {
+    const { name, surname, email, password, stato, company } = req.body;
+    if (!name) {
+      return res.json({
+        error: "name is required",
+      });
+    }
+    if (!surname) {
+      return res.json({
+        error: "surname is required",
+      });
+    }
+    if (!email) {
+      return res.json({
+        error: "email is required",
+      });
+    }
+    if (!stato) {
+      return res.json({
+        error: "stato is required",
+      });
+    }
+    if (!password || password.length < 6) {
+      return res.json({
+        error: "password is required and should be at least 6 characters long",
+      });
+    }
+    if (stato === "employer" && !company) {
+      return res.json({
+        error: "Company name is required",
+      });
+    }
+    const exist = await pool.query(
+      `
+    SELECT EXISTS (
+      SELECT 1
+      FROM utente
+      WHERE email = $1
+    );
+  `,
+      [email]
+    );
+    if (exist.rows[0].exists) {
+      return res.json({
+        error: "email is taken",
+      });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const newUtente = await pool.query(
+      "INSERT INTO utente (nome, cognome, email, password, stato, company_name) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+      [name, surname, email, hashedPassword, stato, company]
+    );
+
+    res.json(newUtente.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post("/postjob", async (req, res) => {
+  try {
+    const { position, category, location, description, employer, company } =
+      req.body;
+    if (!position) {
+      return res.json({
+        error: "position is required",
+      });
+    }
+    if (!category) {
+      return res.json({
+        error: "category is required",
+      });
+    }
+    if (!location) {
+      return res.json({
+        error: "location is required",
+      });
+    }
+    if (!description) {
+      return res.json({
+        error: "description is required",
+      });
+    }
+
+    const newJob = await pool.query(
+      `
+    INSERT INTO JOB (nome_job, descrizione, location, category, employer, company_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+  `,
+      [position, description, location, category, employer, company]
+    );
+
+    res.json(newJob.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));

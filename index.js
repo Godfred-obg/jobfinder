@@ -9,9 +9,9 @@ const { hashPassword, comparePassword } = require("./auth");
 //const cookieParser = require("cookie-parser");
 //const jwt = require("jsonwebtoken");
 const fs = require("fs");
-/*const { sendRegistrationEmail } = require("./email");
+const { sendRegistrationEmail } = require("./email");
 
-app.use(express.json({ extended: false }));*/
+app.use(express.json({ extended: false }));
 app.use(
   cors({
     origin: "*", // Replace with the origin of your React app

@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 const pool = require("./db");
 const { hashPassword, comparePassword } = require("./auth");
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 //const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { sendRegistrationEmail } = require("./email");

@@ -45,7 +45,7 @@ const upload = multer({ storage: storage });*/
 
 app.use("/api/product", product);
 
-app.post("/upload-files", async (req, res) => {
+app.post("/upload-files", upload.single("file"), async (req, res) => {
   res.send("Successful");
 });
 

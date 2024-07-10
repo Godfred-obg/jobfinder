@@ -50,6 +50,7 @@ app.post("/upload-files", upload.single("file"), async (req, res) => {
   const job = req.body.job;
   const employee = req.body.user;
   console.log(job, employee);
+  console.log("Enter..............");
 
   try {
     const newfile = await pool.query(

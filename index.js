@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const product = require("./api/product");
 const cors = require("cors");
+const multer = require('multer');
 
 require("dotenv").config();
 const pool = require("./db");
@@ -27,7 +28,7 @@ const isNullOrEmpty = (value) =>
 
 app.use(cookieParser());
 //app.use("/files", express.static("files"));
-const multer = require('multer');
+
 const upload=multer({dest: 'upload/'});
 /*const storage = multer.diskStorage({
   destination: function (req, file, cb) {

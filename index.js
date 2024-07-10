@@ -23,7 +23,6 @@ app.use(
 
 const isNullOrEmpty = (value) =>
   !value || value.toLowerCase() === "undefined" || value === "";
-
 //app.use(express.json()); //req.body
 
 app.use(cookieParser());

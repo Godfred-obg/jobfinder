@@ -12,7 +12,7 @@ const fs = require("fs");
 const { sendRegistrationEmail } = require("./email");
 
 
-//app.use(express.json({ extended: false }));
+app.use(express.json({ extended: false }));
 app.use(
   cors({
     origin: "*", // Replace with the origin of your React app
@@ -23,7 +23,7 @@ app.use(
 
 const isNullOrEmpty = (value) =>
   !value || value.toLowerCase() === "undefined" || value === "";
-app.use(express.json()); //req.body
+//app.use(express.json()); //req.body
 
 app.use(cookieParser());
 //app.use("/files", express.static("files"));
@@ -41,7 +41,7 @@ app.use(cookieParser());
 
 const upload = multer({ storage: storage });*/
 
-//app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/product", product);
 

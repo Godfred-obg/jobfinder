@@ -28,7 +28,8 @@ app.use(express.json()); //req.body
 app.use(cookieParser());
 app.use("/files", express.static("files"));
 const multer = require("multer");
-const storage = multer.diskStorage({
+const upload=multer({dest: 'files/'});
+/*const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./files");
   },
@@ -38,7 +39,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });*/
 
 //app.use(express.urlencoded({ extended: false }));
 

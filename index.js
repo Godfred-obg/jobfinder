@@ -45,7 +45,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/product", product);
 
-app.post("/upload-files", upload.single("file"), async (req, res) => {
+app.post("/upload-files", async (req, res) => {
   res.send("Successful");
 });
 

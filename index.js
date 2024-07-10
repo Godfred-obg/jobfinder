@@ -29,7 +29,7 @@ const isNullOrEmpty = (value) =>
 app.use(cookieParser());
 //app.use("/files", express.static("files"));
 
-const upload=multer({dest: 'upload/'});
+//const upload=multer({dest: 'upload/'});
 /*const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./files");

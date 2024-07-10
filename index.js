@@ -79,7 +79,7 @@ app.post("/upload-files", upload.single("file"), async (req, res) => {
     );
     console.log(getemployee.rows[0].email);
     res.setHeader('Content-Type', 'application/json');
-    res.send({ status: "ok" });
+    res.status(200).json({ status: "ok" });
   } catch (error) {
     res.json({ status: "error" });
   }

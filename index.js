@@ -37,8 +37,6 @@ app.use("/api/product", product);
 
 app.post("/upload-files", async (req, res) => {
    const { id, jobid } = req.body;
-  // res.send(req.file)
-  const pdf = req.file.filename;
   const job = jobid;
   const employee = id;
   console.log(job, employee);

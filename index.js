@@ -36,7 +36,38 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/product", product);
 
 app.post("/upload-files", async (req, res) => {
-  res.send("Successful");
+   const { id, jobid } = req.body;
+  // res.send(req.file)
+  const pdf = req.file.filename;
+  const job = jobid;
+  const employee = id;
+  console.log(job, employee);
+  try {
+    const application = await pool.query(
+      "INSERT INTO application (job, employee) VALUES($1, $2) RETURNING *",
+      [job, employee]
+    );
+
+    const getjob = await pool.query(
+      "SELECT nome_job FROM job where job_id=$1",
+      [job]
+    );
+    const getemployee = await pool.query(
+      "SELECT nome, email FROM utente where utente_id=$1",
+      [employee]
+    );
+
+    sendRegistrationEmail(
+      getjob.rows[0].nome_job,
+      getemployee.rows[0].nome,
+      getemployee.rows[0].email
+    );
+    console.log(getemployee.rows[0].email);
+
+    res.send({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error" });
+  }
 });
 
 app.post("/login", async (req, res) => {

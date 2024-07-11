@@ -353,10 +353,9 @@ app.get("/candidates/:id", async (req, res) => {
     const id = req.params.id;
     const job = await pool.query(
       `
-        SELECT nome_job, location, u.nome as nome, u.cognome, f.pdf as file
+        SELECT nome_job, location, u.nome as nome, u.cognome
         FROM job
         JOIN application AS app ON (app.job=job_id)
-        JOIN files AS f ON (f.id=app.file)
         JOIN utente AS u ON (u.utente_id=app.employee)
         WHERE job_id = $1
       `,

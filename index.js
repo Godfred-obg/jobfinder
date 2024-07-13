@@ -353,7 +353,7 @@ app.get("/candidates/:id", async (req, res) => {
     const id = req.params.id;
     const job = await pool.query(
       `
-        SELECT nome_job, location, u.nome as nome, u.cognome
+        SELECT nome_job, location, u.nome as nome, u.cognome, u.email
         FROM job
         JOIN application AS app ON (app.job=job_id)
         JOIN utente AS u ON (u.utente_id=app.employee)

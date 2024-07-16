@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const product = require("./api/product");
 const cors = require("cors");
 const multer = require('multer');
 
@@ -24,16 +23,10 @@ app.use(
 
 const isNullOrEmpty = (value) =>
   !value || value.toLowerCase() === "undefined" || value === "";
-//app.use(express.json()); //req.body
 
 app.use(cookieParser());
-//app.use("/files", express.static("files"));
-
-
 
 app.use(express.urlencoded({ extended: false }));
-
-app.use("/api/product", product);
 
 app.post("/upload-files", async (req, res) => {
    const { id, jobid } = req.body;
